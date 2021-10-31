@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/initializing.css" th:href="@{/css/initializing.css}"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css" th:href="@{/css/main.css}"/>
+    <meta name="_csrf" th:content="${_csrf.token}" id="csrf"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" id="csrf_header"/>
+    <title>Messenger</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="control _active">
+                <div class="control_menu">
+                    <div class="logo"></div>
+                    <div class="nav">
+                        <div class="nav_button" id="create-chat-button">
+                            <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                            </svg>
+                        </div>
+                        <div class="nav_button _active" id="contacts-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                                <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                            </svg>
+                        </div>
+                        <div class="nav_button" id="messages-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                            </svg>
+                        </div>
+                        <div class="nav_button" id="notifications-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                            </svg>
+                        </div>
+                        <div class="nav_button" id="support-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-question-octagon" viewBox="0 0 16 16">
+                                <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353L4.54.146zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1H5.1z"/>
+                                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="user">
+                        <div class="nav_button" id="settings-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                            </svg>
+                        </div>
+                        <div class="profile">
+                            <div class="status_oval _active"></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="control_tab">
+                        <div class="tab" id="create-chat-tab">
+                            <div class="control_header">
+                                <div class="header_title">Create chat</div>
+                                <input class="search" type="search" placeholder="Search channels or users"/> 
+                            </div>
+                            <div class="control_content" id="create-chat-content">
+                                create-chat-content
+                            </div>
+                        </div>
+                        <div class="tab _active" id="contacts-tab">
+                            <div class="control_header">
+                                <div class="header_title">Contacts</div>
+                                <input class="search" type="search" placeholder="Search users"/> 
+                            </div>
+                            <div class="control_content" id="contacts-content">
+
+<!--                                <div class="card">-->
+<!--                                    <div class="card_icon_container">-->
+<!--                                        <div class="card_icon">-->
+<!--                                            <div class="status_oval "></div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="card_info">-->
+<!--                                        <div class="card_header">-->
+<!--                                            <div class="card_title">-->
+<!--                                                <div class="title_text">William Wright</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="card_content">-->
+<!--                                            <div class="card_last_content">-->
+<!--                                                last seen 3 days ago-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="card_movement">-->
+<!--                                        <div class="dot_menu"></div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                        <div class="tab" id="messages-tab">
+                            <div class="control_header">
+                                <div class="header_title">Messages</div>
+                                <input class="search" type="search" placeholder="Search into chats"/> 
+                            </div>
+                            <div class="control_content _active" id="messages-content">
+<!--                                <div class="card">-->
+<!--                                    <div class="card_icon_container">-->
+<!--                                        <div class="card_icon">-->
+<!--                                            <div class="status_oval _active"></div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="card_info">-->
+<!--                                        <div class="card_header">-->
+<!--                                            <div class="card_title">-->
+<!--                                                <div class="title_text">William Wright</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="card_last_updated_by">-->
+<!--                                                <div class="date_text">12:43 PM</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="card_content">-->
+<!--                                            <div class="card_last_content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, facilis enim. Aliquam eaque, cumque a, maxime itaque doloremque est nemo similique accusantium commodi nisi aperiam amet voluptatibus! Molestiae, rerum delectus?</div>-->
+<!--                                            <div class="card_update_count">-->
+<!--                                                <div class="message_count">4</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--    -->
+<!--                                <div class="card">-->
+<!--                                    <div class="card_icon_container">-->
+<!--                                        <div class="card_icon">-->
+<!--                                            <div class="status_oval _active"></div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="card_info">-->
+<!--                                        <div class="card_header">-->
+<!--                                            <div class="card_title">-->
+<!--                                                <div class="title_text">William Wright</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="card_last_updated_by">-->
+<!--                                                <div class="date_text">12:43 PM</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="card_content">-->
+<!--                                            <div class="card_last_content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, facilis enim. Aliquam eaque, cumque a, maxime itaque doloremque est nemo similique accusantium commodi nisi aperiam amet voluptatibus! Molestiae, rerum delectus?</div>-->
+<!--                                            <div class="card_update_count">-->
+<!--                                                <div class="message_count">4</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="card">-->
+<!--                                    <div class="card_icon_container">-->
+<!--                                        <div class="card_icon">-->
+<!--                                            <div class="status_oval _active"></div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="card_info">-->
+<!--                                        <div class="card_header">-->
+<!--                                            <div class="card_title">-->
+<!--                                                <div class="title_text">William Wright</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="card_last_updated_by">-->
+<!--                                                <div class="date_text">12:43 PM</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="card_content">-->
+<!--                                            <div class="card_last_content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, facilis enim. Aliquam eaque, cumque a, maxime itaque doloremque est nemo similique accusantium commodi nisi aperiam amet voluptatibus! Molestiae, rerum delectus?</div>-->
+<!--                                            <div class="card_update_count">-->
+<!--                                                <div class="message_count">4</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="card">-->
+<!--                                    <div class="card_icon_container">-->
+<!--                                        <div class="card_icon">-->
+<!--                                            <div class="status_oval _active"></div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="card_info">-->
+<!--                                        <div class="card_header">-->
+<!--                                            <div class="card_title">-->
+<!--                                                <div class="title_text">William Wright</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="card_last_updated_by">-->
+<!--                                                <div class="date_text">12:43 PM</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="card_content">-->
+<!--                                            <div class="card_last_content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, facilis enim. </div>-->
+<!--                                            <div class="card_update_count">-->
+<!--                                                <div class="message_count">4</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="card">-->
+<!--                                    <div class="card_icon_container">-->
+<!--                                        <div class="card_icon">-->
+<!--                                            <div class="status_oval _active"></div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="card_info">-->
+<!--                                        <div class="card_header">-->
+<!--                                            <div class="card_title">-->
+<!--                                                <div class="title_text">William Wright</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="card_last_updated_by">-->
+<!--                                                <div class="date_text">12:43 PM</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="card_content">-->
+<!--                                            <div class="card_last_content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, facilis enim. Aliquam eaque, cumque a, maxime itaque doloremque est nemo similique accusantium commodi nisi aperiam amet voluptatibus! Molestiae, rerum delectus?</div>-->
+<!--                                            <div class="card_update_count">-->
+<!--                                                <div class="message_count">4</div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                            
+                            </div>
+                        </div>
+                        <div class="tab" id="notifications-tab">
+                            <div class="control_header">
+                                <div class="header_title">Notifications</div>
+                                <input class="search" type="search" placeholder="Search into notifications"/> 
+                            </div>
+                            <div class="control_content" id="notifications-content">notifications-content</div>
+                        </div>
+                        <div class="tab" id="support-tab">
+                            <div class="control_header">
+                                <div class="header_title">Support</div>
+                                <input class="search" type="search" placeholder="Search into support"/> 
+                            </div>
+                            <div class="control_content" id="support-content">support-content</div>
+                        </div>
+                        <div class="tab" id="settings-tab">
+                            <div class="control_header">
+                                <div class="header_title">Settings</div>
+                            </div>
+                            <div class="control_content" id="settings-content">settings-content</div>
+                        </div>
+                        <div class="tab" id="search-tab">
+                            <div class="control_header">
+                                <div class="header_title">Search result:</div>
+                            </div>
+                            <div class="control_content" id="search-result">search-result</div>
+                        </div>
+                </div>    
+            </div>
+            <div class="content">
+                <div class="conversation _active">
+                    <div class="conversation_header">
+                        <div class="back_button">
+                        </div>
+                        <div class="chat_icon">
+                            <div class="card_icon">
+                                <div class="status_oval _active"></div>
+                            </div>
+                        </div>
+                        <div class="chat_info">
+                            <div class="header_title">
+                                William Wright
+                            </div>
+                            <div class="header_subtitle">
+                                online
+                            </div>
+                        </div>
+                        <div class="header_movement">
+                            <div class="dot_menu"></div>
+                        </div>
+                    </div>
+                    <div class="conversation_body">
+                        <div class="messages">
+                            <div class="message_container _user">
+                                <div class="message_movement">
+                                    <div class="dot_menu"></div>
+                                </div>
+                                <div class="message">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt dicta at, maxime asperiores aut autem laudantium id ad voluptas culpa vel, beatae harum in possimus corrupti repellendus a rem! Voluptatibus.
+                                </div>
+                            </div>
+                            <div class="message_container _companion">
+                                <div class="message">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt dicta at, maxime asperiores aut autem laudantium id ad voluptas culpa vel, beatae harum in possimus corrupti repellendus a rem! Voluptatibus.
+                                </div>
+                                <div class="message_movement">
+                                    <div class="dot_menu"></div>
+                                </div>
+                            </div>
+                            <div class="message_container _user">
+                                <div class="message_movement">
+                                    <div class="dot_menu"></div>
+                                </div>
+                                <div class="message">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt dicta at, maxime asperiores aut autem laudantium id ad voluptas culpa vel, beatae harum in possimus corrupti repellendus a rem! Voluptatibus.
+                                </div>
+                            </div>
+                            <div class="message_container _companion">
+                                <div class="message">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt dicta at, maxime asperiores aut autem laudantium id ad voluptas culpa vel, beatae harum in possimus corrupti repellendus a rem! Voluptatibus.
+                                </div>
+                                <div class="message_movement">
+                                    <div class="dot_menu"></div>
+                                </div>
+                            </div>
+                            <div class="message_container _user">
+                                <div class="message_movement">
+                                    <div class="dot_menu"></div>
+                                </div>
+                                <div class="message">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt dicta at, maxime asperiores aut autem laudantium id ad voluptas culpa vel, beatae harum in possimus corrupti repellendus a rem! Voluptatibus.
+                                </div>
+                            </div>
+                            <div class="message_container _companion">
+                                <div class="message">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt dicta at, maxime asperiores aut autem laudantium id ad voluptas culpa vel, beatae harum in possimus corrupti repellendus a rem! Voluptatibus.
+                                </div>
+                                <div class="message_movement">
+                                    <div class="dot_menu"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="conversation_footer">
+                        <div class="footer_content">
+                            <input type="text" class="message_input" placeholder="Enter new message">
+                            <button class="send">Send</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="info_block">
+                        <div class="info_header">
+                            <div class="close_button">
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="info_content">
+                            <div class="companion_info">
+                                <div class="companion_icon">
+                                    <div class="status_oval _active"></div>
+                                </div>
+                                <div class="companion_name">William Wright</div>
+                                <div class="companion_descriptions">
+                                    <div class="description_main">lalaal@mail.com</div>
+                                    <div class="description_other">Poligender</div>
+                                    <div class="description_other">19 August 1991</div>
+                                    <div class="movements">
+                                        <div class="add_button" id="add-contact">Add to contacts</div>
+                                        <div class="delete_button" id="ignore-contact">Add to ignore list</div>
+                                        <div class="delete_button" id="del-chat">Delete chat</div>
+                                        <div class="delete_button" id="del-contact">Delete contact</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+</body>
+</html>

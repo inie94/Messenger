@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/initializing.css" th:href="@{/css/initializing.css}"/>
+    <link rel="stylesheet" type="text/css" href="../css/login.css" th:href="@{/css/login.css}"/>
+    <title>Registration</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <form th:action="@{/registration}" th:object="${user}" method="post">
+                <input type="search" id="firstname" th:field="*{firstname}" placeholder="First name">
+                <input type="search" id="lastname" th:field="*{lastname}" placeholder="Last name">
+                <input type="search" id="email" th:field="*{email}" placeholder="Email">
+                <input type="search" id="gender" th:field="*{gender}" placeholder="Gender">
+                <input type="search" id="password" th:field="*{password}"  placeholder="Password">
+                <input type="search" id="repeat-password" th:field="*{repeatPassword}" placeholder="Repeat password">
+                <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" value="1994-01-01">
+                <button class="submit" type="submit" value="Submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
+</html>

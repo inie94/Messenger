@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/initializing.css" th:href="@{/css/initializing.css}"/>
+    <link rel="stylesheet" type="text/css" href="../css/login.css" th:href="@{/css/login.css}"/>
+    <title>Login</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <form th:action="@{/authenticateTheUser}" method="post">
+                <input type="search" class="form-control" name="username" id="email" placeholder="Email" onkeyup="checkForm()">
+                <input type="search" class="form-control" name="password" id="password" placeholder="Password" onkeyup="checkForm()">
+                <button class="submit" type="submit" value="Submit">Submit</button>
+            </form>
+            <a class="reg-button" href="/registration" type="button">Registration</a>
+        </div>
+    </div>
+</body>
+</html>
