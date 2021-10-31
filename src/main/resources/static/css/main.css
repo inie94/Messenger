@@ -133,16 +133,19 @@
     width: 100%;
     height: fit-content;
     border-radius: 10px;
-    display: flex;
+    /* display: flex; */
     background-color: #222;
 }
 .card._active .status_oval {
     display: block;
 }
+.card_body {
+    display: flex;
+}
 .card_icon_container {
     padding: 15px;
     align-items: center;
-} 
+}
 .card_icon {
     position: relative;
     width: 50px;
@@ -152,10 +155,6 @@
 }
 .card_info {
     width: 100%;
-    padding: 5px 0px 5px 0px;
-    display: grid;
-    row-gap: 5px;
-    height: 100%;
 }
 #contacts-content .card_info{
     align-self: center;
@@ -198,11 +197,20 @@
 }
 .card_movement{
     position: relative;
-    padding: 30px;
+    padding: 10px 20px 10px 20px;
+    display: none;
+    width: 100%;
+    /* justify-content: center; */
+    text-align: center;
 }
-.card_movement:hover .dot_menu {
-    width: 5px;
-    height: 5px;
+.card:hover .card_movement {
+    display: grid;
+    row-gap: 10px;
+}
+.card:hover .card_body {
+    border-bottom: 1px;
+    border-color: grey;
+    border-style: outset;
 }
 .card_last_content {
     max-height: 100px;

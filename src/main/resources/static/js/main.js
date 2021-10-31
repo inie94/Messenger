@@ -25,12 +25,12 @@ const supportTab = document.querySelector('#support-tab');
 const settingsTab = document.querySelector('#settings-tab');
 
 // tabs content
-const createChatContent = document.querySelector('#create-chat-content');
+var createChatContent = document.querySelector('#create-chat-content');
 var contactsContent = document.querySelector('#contacts-tab').querySelector('.control_content');
-const messagesContent = document.querySelector('#messages-content');
-const notificationsContent = document.querySelector('#notifications-content');
-const supportContent = document.querySelector('#support-content');
-const settingsContent = document.querySelector('#settings-content');
+var messagesContent = document.querySelector('#messages-content');
+var notificationsContent = document.querySelector('#notifications-content');
+var supportContent = document.querySelector('#support-content');
+var settingsContent = document.querySelector('#settings-content');
 
 
 const headerBtn = document.querySelector('.header_movement');
@@ -53,9 +53,9 @@ backButton.addEventListener('click', function(e) {
     control.classList.toggle('_active');
 });
 
-const diologs = document.querySelectorAll('.diolog');
-diologs.forEach(diolog => {
-    diolog.addEventListener('click', function(e) {
+const dialogs = document.querySelectorAll('.dialog');
+dialogs.forEach(dialog => {
+    dialog.addEventListener('click', function(e) {
         content.classList.toggle('_active');
         control.classList.toggle('_active');
     });
@@ -64,51 +64,45 @@ diologs.forEach(diolog => {
 const conversationBody = document.querySelector('.conversation_body');
 conversationBody.scrollTop = conversationBody.scrollHeight;
 
-function resetActiveButton() {
-    document.querySelector('.nav_button._active').classList.remove('_active');
-}   
-
 function resetActiveTab() {
+    document.querySelector('.nav_button._active').classList.remove('_active');
+    document.querySelectorAll('.search').forEach(input => {
+        input.value = '';
+    });
     document.querySelector('.tab._active').classList.remove('_active');
 }
 
 createChatButton.addEventListener('click', function(event) {
-    resetActiveButton();
     resetActiveTab();
     event.currentTarget.classList.add('_active');
     createChatTab.classList.add('_active');
 });
 
 contactsButton.addEventListener('click', function(event) {
-    resetActiveButton();
     resetActiveTab();
     event.currentTarget.classList.add('_active');
     contactsTab.classList.add('_active');
 });
 
 messagesButton.addEventListener('click', function(event) {
-    resetActiveButton();
     resetActiveTab();
     event.currentTarget.classList.add('_active');
     messagesTab.classList.add('_active');
 });
 
 notificationsButton.addEventListener('click', function(event) {
-    resetActiveButton();
     resetActiveTab();
     event.currentTarget.classList.add('_active');
     notificationsTab.classList.add('_active');
 });
 
 supportButton.addEventListener('click', function(event) {
-    resetActiveButton();
     resetActiveTab();
     event.currentTarget.classList.add('_active');
     supportTab.classList.add('_active');
 });
 
 settingsButton.addEventListener('click', function(event) {
-    resetActiveButton();
     resetActiveTab();
     event.currentTarget.classList.add('_active');
     settingsTab.classList.add('_active');
