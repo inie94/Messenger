@@ -9,9 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class MessageDTO {
     private Long id;
-//    private MessageType type;
-//    private TopicDTO topic;
     private String content;
-    private UserDTO sender;
+    private Long sender;
+    private Long recipient;
     private Long createdBy;
 }

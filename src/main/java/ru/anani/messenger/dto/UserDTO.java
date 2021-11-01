@@ -1,6 +1,7 @@
 package ru.anani.messenger.dto;
 
 import lombok.*;
+import ru.anani.messenger.entities.enums.UserStatus;
 
 import java.sql.Date;
 import java.util.Set;
@@ -18,6 +19,5 @@ public class UserDTO {
     private String gender;
     private String password;
     private Date dateOfBirth;
-//    private Set<RelationshipDTO> relationships;
-//    private UserStatus status;
+    private UserStatus status;
 }

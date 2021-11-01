@@ -94,8 +94,8 @@ public class UserService {
      * @param value is searching string
      * @return List of all users who contains value into email or firstname or lastname
      */
-    public List<User> searchUsersBy(String value) {
-        return new ArrayList<>(repository.findAllByEmailOrFirstnameOrLastnameContainsIgnoreCase(value));
+    public List<User> searchUsersBy(User user, String value) {
+        return new ArrayList<>(repository.findAllByEmailOrFirstnameOrLastnameContainsIgnoreCase(user.getId(), value));
     }
 
 }

@@ -202,6 +202,7 @@
     width: 100%;
     /* justify-content: center; */
     text-align: center;
+    height: fit-content;
 }
 .card:hover .card_movement {
     display: grid;
@@ -222,9 +223,21 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     color: grey;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 10px;
+    line-height: 1.5;
+}
+.card_text_info {
+    padding-top: 5px;
+    font-size: 11pt;
+    color: grey;
 }
 .card_update_count {
     padding: 10px;
+}
+.message_box {
+    display: flex;
 }
 .message_count {
     right: 10px;
@@ -246,6 +259,9 @@
     width: 100%;
     display: flex;
     background-color: #222;
+}
+.content._hide {
+    display:none;
 }
 .conversation {
     position: relative;

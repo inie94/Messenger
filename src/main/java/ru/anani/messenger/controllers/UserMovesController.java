@@ -24,20 +24,7 @@ public class UserMovesController {
         this.userService = userService;
     }
 
-    @GetMapping("/search")
-    public List<ContactDTO> searchUsers(@RequestParam("value") String searchValue, Principal principal) {
 
-        User user = userService.findByEmail(principal.getName());
-
-        List<ContactDTO> contacts = new ArrayList<>();
-        List<User> users = userService.searchUsersBy(searchValue);
-
-        users.remove(user);
-
-        users.forEach(user1 -> contacts.add(DTOService.toContact(user1)));
-
-        return contacts;
-    }
 //
 //    @GetMapping("/user/id:{id}/get-topic")
 //    public RelationshipDTO connectToUserTopic(@PathVariable("id") long id,

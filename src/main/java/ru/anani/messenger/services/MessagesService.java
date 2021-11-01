@@ -3,7 +3,13 @@ package ru.anani.messenger.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.anani.messenger.entities.Message;
+import ru.anani.messenger.entities.User;
 import ru.anani.messenger.repositories.MessagesRepository;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -18,9 +24,13 @@ public class MessagesService {
         this.userService = userService;
     }
 
-//    public void save(Message message) {
-//        repository.save(message);
-//    }
+    public void save(Message message) {
+        repository.save(message);
+    }
+
+    public Message getLastMessageByUserAndCompanion(User user, User companion) {
+        return repository.getLastByUserAndCompanion(user, companion).get();
+    }
 //
 //    public void save(MessageDTO message) {
 //        Topic topic = topicService.update(topicService.findById(message.getTopic().getId()));
@@ -29,11 +39,12 @@ public class MessagesService {
 //        repository.save(toMessage(message));
 //    }
 //
-//    public List<Message> getLastMessages(Topic topic) {
-//        return repository.findFirst20ByTopicOrderByCreatedByDesc(topic).stream()
-//                .sorted(Comparator.comparingLong(Message::getCreatedBy))
-//                .collect(Collectors.toList());
-//    }
+    public List<Message> getLastMessages(User user, User companion) {
+        return repository.findFirst20BySenderAndRecipientOrSenderAndRecipientOrderByCreatedByDesc(user, companion, companion, user).stream()
+                .sorted(Comparator.comparingLong(Message::getCreatedBy))
+                .collect(Collectors.toList());
+    }
+
 //
 //    public Message toMessage(MessageDTO dto) {
 //        Topic topic = topicService.findById(dto.getTopic().getId());

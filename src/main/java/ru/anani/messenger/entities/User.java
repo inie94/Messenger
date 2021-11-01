@@ -24,12 +24,10 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "first_name",
-            nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstname;
 
-    @Column(name = "last_name",
-            nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastname;
 
     @Column(nullable = false, unique = true)
@@ -46,9 +44,6 @@ public class User {
     @Column(nullable = false)
     @Size(min = 6, max = 12, message = "Password should be between 6 and 12 characters")
     private String password;
-
-//    @OneToMany(mappedBy = "user")
-//    private Set<Relationship> relationships;
 
     @Column(nullable = false)
     private UserStatus status;

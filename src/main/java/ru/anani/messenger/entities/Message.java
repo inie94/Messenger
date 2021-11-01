@@ -1,9 +1,6 @@
 package ru.anani.messenger.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.anani.messenger.entities.enums.MessageType;
 
 import javax.persistence.*;
@@ -14,25 +11,26 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(nullable = false)
-    private MessageType type;
+//    @Column(nullable = false)
+//    private MessageType type;
 
-//    @ManyToOne
-//    @JoinColumn(name = "topic_id")
-//    private Topic topic;
+    @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "recipient_id", nullable = false)
+    private User recipient;
 
     @Column(nullable = false)
     private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "sender_id")
-    private User sender;
 
     @Column(nullable = false)
     private Long createdBy;

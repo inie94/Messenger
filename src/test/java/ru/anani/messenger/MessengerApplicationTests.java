@@ -4,12 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import ru.anani.messenger.entities.User;
+import ru.anani.messenger.services.MessagesService;
+import ru.anani.messenger.services.UserService;
 
 @SpringBootTest
 class MessengerApplicationTests {
 
 	@Autowired
 	public BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	public MessagesService messagesService;
+	@Autowired
+	public UserService userService;
 
 	@Test
 	void contextLoads() {
@@ -24,4 +31,11 @@ class MessengerApplicationTests {
 		System.out.println("jskewisb@go.com: " + passwordEncoder.encode("1w3oU8xU"));
 	}
 
+	@Test
+	public void getMess() {
+		User user = userService.findById(1);
+		User companion = userService.findById(2);
+
+		messagesService.getLastMessages(user, companion).forEach(System.out::println);
+	}
 }

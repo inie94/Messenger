@@ -14,13 +14,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> findById(Long id);
+//    Optional<User> findById(Long id);
 
     //SELECT * FROM users WHERE LOWER(email) LIKE LOWER('%n%') OR LOWER(first_name) LIKE LOWER('%n%') OR LOWER(last_name) LIKE LOWER('%n%');
     @Query("SELECT u FROM User u " +
-            "WHERE LOWER(u.email) LIKE LOWER(CONCAT('%', :value, '%')) OR " +
-                  "LOWER(u.firstname) LIKE LOWER(CONCAT('%', :value, '%')) OR " +
-                  "LOWER(u.lastname) LIKE LOWER(CONCAT('%', :value, '%'))")
-    List<User> findAllByEmailOrFirstnameOrLastnameContainsIgnoreCase(@Param("value") String value);
+            "WHERE u.id != (:id) AND " +
+            "(LOWER(u.email) LIKE LOWER(CONCAT('%', :value, '%')) OR " +
+            "LOWER(u.firstname) LIKE LOWER(CONCAT('%', :value, '%')) OR " +
+            "LOWER(u.lastname) LIKE LOWER(CONCAT('%', :value, '%')))")
+    List<User> findAllByEmailOrFirstnameOrLastnameContainsIgnoreCase(@Param("id") Long userId, @Param("value") String value);
 
 }

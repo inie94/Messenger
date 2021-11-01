@@ -1,7 +1,9 @@
 package ru.anani.messenger.dto;
 
 import lombok.*;
+import ru.anani.messenger.entities.Message;
 import ru.anani.messenger.entities.User;
+import ru.anani.messenger.entities.enums.RelationshipStatus;
 import ru.anani.messenger.entities.enums.UserStatus;
 
 import java.sql.Date;
@@ -12,11 +14,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContactDTO {
-    private Long id;
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String gender;
-    private Date dateOfBirth;
-    private UserStatus status;
+    private UserDTO user;
+    private RelationshipStatus status;
+    private MessageDTO lastMessage;
 }
