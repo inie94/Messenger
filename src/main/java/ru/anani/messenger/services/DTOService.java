@@ -9,11 +9,12 @@ import ru.anani.messenger.entities.User;
 
 public class DTOService {
 
-    public static ContactDTO toContact(Relationship relationship, Message message) {
+    public static ContactDTO toContact(Relationship relationship, Message message, Long newMessagesCount) {
         return ContactDTO.builder()
                 .user(toUserDTO(relationship.getCompanion()))
                 .status(relationship.getStatus())
                 .lastMessage(toMessageDTO(message))
+                .newMessagesCount(newMessagesCount)
                 .build();
     }
 
@@ -30,12 +31,16 @@ public class DTOService {
     }
 
     public static MessageDTO toMessageDTO(Message message) {
+        if (message == null) {
+            return null;
+        }
         return MessageDTO.builder()
                 .id(message.getId())
-                .sender(message.getSender().getId())
-                .recipient(message.getRecipient().getId())
+                .senderId(message.getSender().getId())
+                .recipientId(message.getRecipient().getId())
                 .content(message.getContent())
                 .createdBy(message.getCreatedBy())
+                .status(message.getStatus())
                 .build();
     }
 //

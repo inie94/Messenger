@@ -1,6 +1,7 @@
 package ru.anani.messenger.dto;
 
 import lombok.*;
+import ru.anani.messenger.entities.enums.MessageStatus;
 
 @Getter
 @Setter
@@ -10,7 +11,8 @@ import lombok.*;
 public class MessageDTO {
     private Long id;
     private String content;
-    private Long sender;
-    private Long recipient;
+    private Long senderId;
+    private Long recipientId;
     private Long createdBy;
+    private MessageStatus status;
 }

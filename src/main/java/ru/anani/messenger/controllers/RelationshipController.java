@@ -40,8 +40,10 @@ public class RelationshipController {
         List<ContactDTO> contacts = new ArrayList<>();
 
         relationships.forEach(relationship -> {
+            // get new messages count
+            Long newMessagesCount = messagesService.getNewMessagesCount(relationship.getUser(), relationship.getCompanion());
             Message message = messagesService.getLastMessageByUserAndCompanion(user, relationship.getCompanion());
-            contacts.add(DTOService.toContact(relationship, message));
+            contacts.add(DTOService.toContact(relationship, message, newMessagesCount));
         });
 
         return contacts;
@@ -69,6 +71,8 @@ public class RelationshipController {
 
         Message message = messagesService.getLastMessageByUserAndCompanion(user, companion);
 
-        return DTOService.toContact(userRelationship, message);
+        // get new messages count
+
+        return DTOService.toContact(userRelationship, message, 0L);
     }
 }

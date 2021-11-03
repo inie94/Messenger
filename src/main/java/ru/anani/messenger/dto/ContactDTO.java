@@ -17,4 +17,5 @@ public class ContactDTO {
     private UserDTO user;
     private RelationshipStatus status;
     private MessageDTO lastMessage;
+    private Long newMessagesCount;
 }

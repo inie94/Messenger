@@ -3,12 +3,15 @@ package ru.anani.messenger.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.anani.messenger.dto.MessageDTO;
 import ru.anani.messenger.entities.Message;
 import ru.anani.messenger.entities.User;
+import ru.anani.messenger.entities.enums.MessageStatus;
 import ru.anani.messenger.repositories.MessagesRepository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,42 +27,44 @@ public class MessagesService {
         this.userService = userService;
     }
 
-    public void save(Message message) {
-        repository.save(message);
+    public Message save(Message message) {
+        return repository.save(message);
+    }
+
+    public MessageDTO save(MessageDTO message) {
+        return DTOService.toMessageDTO(repository.save(toMessage(message)));
     }
 
     public Message getLastMessageByUserAndCompanion(User user, User companion) {
-        return repository.getLastByUserAndCompanion(user, companion).get();
+        try {
+            return repository.getLastByUserAndCompanion(user, companion).get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
-//
-//    public void save(MessageDTO message) {
-//        Topic topic = topicService.update(topicService.findById(message.getTopic().getId()));
-//        message.setTopic(DTOService.toTopicDTO(topic));
-//
-//        repository.save(toMessage(message));
-//    }
-//
+
     public List<Message> getLastMessages(User user, User companion) {
         return repository.findFirst20BySenderAndRecipientOrSenderAndRecipientOrderByCreatedByDesc(user, companion, companion, user).stream()
                 .sorted(Comparator.comparingLong(Message::getCreatedBy))
                 .collect(Collectors.toList());
     }
 
-//
-//    public Message toMessage(MessageDTO dto) {
-//        Topic topic = topicService.findById(dto.getTopic().getId());
-//        User sender = userService.findById(dto.getSender().getId());
-//        Set<User> received = new HashSet<>();
-////        dto.getReceived().forEach(userDTO -> received.add(userService.findById(userDTO.getId())));
-//        return new Message(dto.getId(), dto.getType(), topic, dto.getContent(), sender, dto.getCreatedBy());
-//    }
-//
-//
-////    public List<Message> findAllByTopicAndReceivedNotUser(Topic topic, User user){
-////        return repository.findAllByTopicAndReceivedNotIn(topic, new HashSet<User>(Arrays.asList(user)));
-////    }
-//
-//    public Set<Message> getAllMessagesByTopicAndSenderNot(Topic topic, User user){
-//        return new HashSet<>(repository.findAllByTopicAndSenderNot(topic, user));
-//    }
+    public Message toMessage(MessageDTO dto) {
+        User sender = userService.findById(dto.getSenderId());
+        User recipient = userService.findById(dto.getRecipientId());
+        return new Message(dto.getId(), sender, recipient, dto.getContent(), dto.getCreatedBy(), dto.getStatus());
+    }
+
+    public Long getNewMessagesCount(User recipient, User sender) {
+        return repository.getCountNewMessageCount(recipient, sender);
+    }
+
+    public void updateMessagesToReadByUserId(Long id) {
+        User user = userService.findById(id);
+        List<Message> messages = repository.findAllMessagesIsNotReadByUser(user);
+        messages.forEach(message -> {
+            message.setStatus(MessageStatus.READ);
+            repository.save(message);
+        });
+    }
 }

@@ -7,8 +7,9 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import ru.anani.messenger.entities.Message;
-import ru.anani.messenger.entities.Notification;
+import ru.anani.messenger.dto.MessageDTO;
+import ru.anani.messenger.dto.NotificationDTO;
+import ru.anani.messenger.entities.enums.MessageStatus;
 import ru.anani.messenger.services.MessagesService;
 
 import java.util.Date;
@@ -27,17 +28,21 @@ public class ChatController {
 
     @MessageMapping("/notification")
     @SendTo("/conversation/notification")
-    public Notification sendNotification(@Payload Notification notification,
+    public NotificationDTO sendNotification(@Payload NotificationDTO notification,
                                          SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", notification.getSender());
+        headerAccessor.getSessionAttributes().put("userId", notification.getUserId());
         return notification;
     }
 
     @MessageMapping("/chat.sendMessage")
-    public Message sendMessage(@Payload Message message) {
-        message.setCreatedBy(new Date().getTime());
-        service.save(message);
-        messagingTemplate.convertAndSend("/conversation/user/id:" + message.getRecipient().getId(), message);
+    public MessageDTO sendMessage(@Payload MessageDTO message) {
+        if (!message.getStatus().equals(MessageStatus.READ)) {
+            message.setCreatedBy(new Date().getTime());
+            message = service.save(message);
+        } else {
+            service.updateMessagesToReadByUserId(message.getSenderId());
+        }
+        messagingTemplate.convertAndSend("/conversation/user/id:" + message.getRecipientId(), message);
         return message;
     }
 

@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ru.anani.messenger.dto.MessageDTO;
+import ru.anani.messenger.entities.Message;
 import ru.anani.messenger.entities.User;
+import ru.anani.messenger.entities.enums.MessageStatus;
 import ru.anani.messenger.services.DTOService;
 import ru.anani.messenger.services.MessagesService;
 import ru.anani.messenger.services.RelationshipsService;
@@ -36,10 +38,25 @@ public class MessageController {
         User companion = userService.findById(companionId);
 
         List<MessageDTO> messages = new ArrayList<>();
-        messagesService.getLastMessages(user, companion).forEach(message -> messages.add(DTOService.toMessageDTO(message)));
+
+        List<Message> messageList = messagesService.getLastMessages(user, companion);
+        messagesService.getLastMessages(user, companion).forEach(message -> {
+            if (message.getRecipient().equals(user)) {
+                message.setStatus(MessageStatus.RECEIVED);
+                messages.add(DTOService.toMessageDTO(messagesService.save(message)));
+            } else {
+                messages.add(DTOService.toMessageDTO(message));
+            }
+        });
 
         return messages;
     }
+
+//    @GetMapping("/user/message/all-read")
+//    public void messageReceived(Principal principal) {
+//        User user = userService.findByEmail(principal.getName());
+//        messagesService.updateMessagesToReadByUser(user);
+//    }
 
 //    @GetMapping("/user/topic/id:{id}/messages")
 //    public List<MessageDTO> getAllTopicMessages(@PathVariable("id") long topicId) {

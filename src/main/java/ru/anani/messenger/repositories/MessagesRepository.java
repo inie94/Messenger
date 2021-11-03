@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.anani.messenger.entities.Message;
 import ru.anani.messenger.entities.User;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +21,9 @@ public interface MessagesRepository extends JpaRepository<Message, Long> {
 
     List<Message> findFirst20BySenderAndRecipientOrSenderAndRecipientOrderByCreatedByDesc(User user, User companion, User companion1, User user1);
 
-//    List<Message> findFirst20ByTopicOrderByCreatedByDesc(Topic topic);
+    @Query("SELECT COUNT(m) FROM Message m WHERE m.recipient = :recipient AND m.sender = :sender AND m.status != 2")
+    Long getCountNewMessageCount(@Param("recipient") User recipient, @Param("sender") User sender);
 
-//    List<Message> findByTopicAndCreatedByAfterOrderByCreatedByAsc(Topic topic, Long timestamp);
-
-//    List<Message> findAllByTopicAndSenderNot(Topic topic, User user);
-
+    @Query("SELECT m FROM Message WHERE m.status != 2 AND m.recipient = :recipient")
+    List<Message> findAllMessagesIsNotReadByUser(@Param("recipient") User user);
 }

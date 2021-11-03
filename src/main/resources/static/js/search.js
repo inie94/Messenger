@@ -22,7 +22,7 @@ contactsSearchInput.oninput = function(event) {
             .then(data => {
     //            element += searchHeader('Global search result: ');
                 data.forEach(item => {
-                    element += generateContactCard(item);
+                    element += generateUserCard(item);
                 });
                 contactsContent.innerHTML = element;
             });

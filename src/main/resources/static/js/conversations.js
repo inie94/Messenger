@@ -2,27 +2,34 @@
 
 var messages = [];
 
-
 function loadMessages(id) {
     fetch('user/contact/id:' + id + '/messages')
             .then(response => response.json())
             .then(data => {
                 messages[id] = data;
-                console.log(messages);
+                // check 'SENT' message and do its 'RECEIVED'
             });
 }
 
 function viewUserConversations() {
     var element = '';
     contacts.forEach(contact => {
-        element += generateConversationTab(contact);
+        if(contact.lastMessage) {
+            element += generateConversationTab(contact);
+        }
     });
     messagesContent.innerHTML = element;
 }
 
 function generateConversationTab(contact) {
     var date = new Date(contact.lastMessage.createdBy);
-    var element = (contact.status == 'ONLINE') ? '<div class="card _active" onclick="openConversation(' + contact.user.id + ')">' : '<div class="card" onclick="openConversation(' + contact.user.id + ')">';
+    var element = '';
+    if (contact.user.status == 'ONLINE') {
+        element = '<div class="card _active" onclick="openConversation(' + contact.user.id + ')" id="user-dialog-' + contact.user.id + '">';
+    } else {
+        element = '<div class="card" onclick="openConversation(' + contact.user.id + ')" id="user-dialog-' + contact.user.id + '">';
+    }
+
     element +=
      '<div class="card_body">' +
          '<div class="card_icon_container"><div class="card_icon"><div class="status_oval"></div></div></div>' +
