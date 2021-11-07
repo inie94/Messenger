@@ -12,7 +12,7 @@ public class MessageDTO {
     private Long id;
     private String content;
     private Long senderId;
-    private Long recipientId;
+    private Long dialogId;
     private Long createdBy;
     private MessageStatus status;
 }

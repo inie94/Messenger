@@ -53,14 +53,6 @@ backButton.addEventListener('click', function(e) {
     control.classList.toggle('_active');
 });
 
-//const dialogs = document.querySelectorAll('.dialog');
-//dialogs.forEach(dialog => {
-//    dialog.addEventListener('click', function(e) {
-//        content.classList.toggle('_active');
-//        control.classList.toggle('_active');
-//    });
-//});
-
 const conversationBody = document.querySelector('.conversation_body');
 conversationBody.scrollTop = conversationBody.scrollHeight;
 
@@ -93,7 +85,7 @@ function openMessages(event) {
     resetActiveTab();
     event.currentTarget.classList.add('_active');
     messagesTab.classList.add('_active');
-    getUserConversations();
+    viewUserConversations();
 }
 
 messagesButton.addEventListener('click', openMessages);

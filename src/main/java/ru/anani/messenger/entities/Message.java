@@ -1,9 +1,7 @@
 package ru.anani.messenger.entities;
 
 import lombok.*;
-import org.springframework.boot.context.properties.ConstructorBinding;
 import ru.anani.messenger.entities.enums.MessageStatus;
-import ru.anani.messenger.entities.enums.MessageType;
 
 import javax.persistence.*;
 
@@ -20,16 +18,13 @@ public class Message {
     @Column(name = "id", nullable = false)
     private Long id;
 
-//    @Column(nullable = false)
-//    private MessageType type;
+    @ManyToOne
+    @JoinColumn(name = "dialog_id")
+    private Dialog dialog;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
-
-    @ManyToOne
-    @JoinColumn(name = "recipient_id", nullable = false)
-    private User recipient;
 
     @Column(nullable = false)
     private String content;
@@ -40,11 +35,5 @@ public class Message {
     @Column(nullable = false)
     private MessageStatus status;
 
-    public Message(User sender, User recipient, String content, Long createdBy, MessageStatus status) {
-        this.sender = sender;
-        this.recipient = recipient;
-        this.content = content;
-        this.createdBy = createdBy;
-        this.status = status;
-    }
+
 }

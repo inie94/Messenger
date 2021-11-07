@@ -1,4 +1,4 @@
-
+INSERT INTO users(first_name, last_name, email, gender, date_of_birth, "password", status) VALUES('Justinn', 'Jellico', 'jjellico0@fema.gov', 'Bigender', '1962/10/12', '$2a$10$KB5ay5ZAFmJntnvys07ws.SOuG6zuFfCaibjE6VkT8ygzoaJX1vQO', 1); //iM3M0VMjT
 INSERT INTO users(first_name, last_name, email, gender, date_of_birth, "password", status) VALUES('Myrvyn', 'Champkin', 'mchampkin1@people.com.cn', 'Polygender', '1969/12/12', '$2a$10$86VDM97EKiVKeqY1bHlgJ.sU8.Ovbb2krtGvd0.pw9m8Jr6Gx3XPm', 1); //F4cmpGuXe5
 INSERT INTO users(first_name, last_name, email, gender, date_of_birth, "password", status) VALUES('Marcy', 'Paley', 'mpaley2@washington.edu', 'Agender', '1981/12/24', '$2a$10$7dYxBMbtGSmXCljMw.30QOjfLMzwTGT0Qt0mX4yK6lFppRdNC9Koa', 1); // sshktkCh
 INSERT INTO users(first_name, last_name, email, gender, date_of_birth, "password", status) VALUES('Graeme', 'Avramovsky', 'gavramovsky3@miitbeian.gov.cn', 'Genderfluid', '1976/10/13', '$2a$10$qawYRmzC3OyjHDLA246KIubS/0kUySrxmNJ1GU0tsuVYXhq30B2w6', 1);// aTb9TNZte

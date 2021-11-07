@@ -3,14 +3,16 @@ package ru.anani.messenger.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.anani.messenger.dto.MessageDTO;
+import ru.anani.messenger.entities.Dialog;
 import ru.anani.messenger.entities.Message;
 import ru.anani.messenger.entities.User;
 import ru.anani.messenger.entities.enums.MessageStatus;
 import ru.anani.messenger.services.DTOService;
+import ru.anani.messenger.services.DialogService;
 import ru.anani.messenger.services.MessagesService;
-import ru.anani.messenger.services.RelationshipsService;
 import ru.anani.messenger.services.UserService;
 
 import java.security.Principal;
@@ -22,33 +24,30 @@ public class MessageController {
 
     private final MessagesService messagesService;
     private final UserService userService;
-    private final RelationshipsService relationshipsService;
+    private final DialogService dialogService;
 
     @Autowired
-    public MessageController(MessagesService messagesService, UserService userService, RelationshipsService relationshipsService) {
+    public MessageController(MessagesService messagesService, UserService userService, DialogService dialogService) {
         this.messagesService = messagesService;
         this.userService = userService;
-        this.relationshipsService = relationshipsService;
+        this.dialogService = dialogService;
     }
 
-    @GetMapping("user/contact/id:{id}/messages")
-    public List<MessageDTO> getAllTopicMessages(@PathVariable("id") long companionId, Principal principal) {
 
+    @GetMapping("dialogs/id:{id}/messages")
+    public List<MessageDTO> getAllTopicMessages(@PathVariable("id") long dialogId, Principal principal) {
         User user = userService.findByEmail(principal.getName());
-        User companion = userService.findById(companionId);
-
+        Dialog dialog = dialogService.getDialogById(dialogId);
         List<MessageDTO> messages = new ArrayList<>();
-
-        List<Message> messageList = messagesService.getLastMessages(user, companion);
-        messagesService.getLastMessages(user, companion).forEach(message -> {
-            if (message.getRecipient().equals(user)) {
+        List<Message> messageList = messagesService.getLastMessages(dialog);
+        messageList.forEach(message -> {
+            if (!message.getSender().getId().equals(user.getId())) {
                 message.setStatus(MessageStatus.RECEIVED);
                 messages.add(DTOService.toMessageDTO(messagesService.save(message)));
             } else {
                 messages.add(DTOService.toMessageDTO(message));
             }
         });
-
         return messages;
     }
 

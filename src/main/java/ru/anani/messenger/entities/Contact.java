@@ -1,20 +1,19 @@
 package ru.anani.messenger.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.anani.messenger.entities.enums.RelationshipStatus;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "relationships")
+@Table(name = "contacts")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class Relationship {
+@ToString
+public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,6 +27,8 @@ public class Relationship {
     @JoinColumn(name = "companion_id", nullable = false)
     private User companion;
 
-    @Column(nullable = false)
-    private RelationshipStatus status;
+    public Contact(User user, User companion) {
+        this.user = user;
+        this.companion = companion;
+    }
 }

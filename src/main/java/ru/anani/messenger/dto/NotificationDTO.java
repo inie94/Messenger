@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class NotificationDTO {
     private Long id;
     private NotificationType type;
-//    private Long senderId;
     private Long userId;
+    private Long targetId;
     private Long createdBy;
 }

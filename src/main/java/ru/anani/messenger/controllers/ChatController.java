@@ -34,15 +34,15 @@ public class ChatController {
         return notification;
     }
 
-    @MessageMapping("/chat.sendMessage")
+    @MessageMapping("/message")
     public MessageDTO sendMessage(@Payload MessageDTO message) {
         if (!message.getStatus().equals(MessageStatus.READ)) {
             message.setCreatedBy(new Date().getTime());
             message = service.save(message);
         } else {
-            service.updateMessagesToReadByUserId(message.getSenderId());
+//            service.updateMessagesToReadByUserId(message.getSenderId());
         }
-        messagingTemplate.convertAndSend("/conversation/user/id:" + message.getRecipientId(), message);
+        messagingTemplate.convertAndSend("/conversation/dialog/id:" + message.getDialogId(), message);
         return message;
     }
 

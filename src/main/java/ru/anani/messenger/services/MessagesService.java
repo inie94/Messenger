@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.anani.messenger.dto.MessageDTO;
+import ru.anani.messenger.entities.Dialog;
 import ru.anani.messenger.entities.Message;
 import ru.anani.messenger.entities.User;
-import ru.anani.messenger.entities.enums.MessageStatus;
 import ru.anani.messenger.repositories.MessagesRepository;
 
 import java.util.Comparator;
@@ -20,11 +20,13 @@ public class MessagesService {
 
     private final MessagesRepository repository;
     private final UserService userService;
+    private final DialogService dialogService;
 
     @Autowired
-    public MessagesService(MessagesRepository repository, UserService userService) {
+    public MessagesService(MessagesRepository repository, UserService userService, DialogService dialogService) {
         this.repository = repository;
         this.userService = userService;
+        this.dialogService = dialogService;
     }
 
     public Message save(Message message) {
@@ -34,37 +36,37 @@ public class MessagesService {
     public MessageDTO save(MessageDTO message) {
         return DTOService.toMessageDTO(repository.save(toMessage(message)));
     }
-
-    public Message getLastMessageByUserAndCompanion(User user, User companion) {
+//
+    public Message getLastMessageByDialog(Dialog dialog) {
         try {
-            return repository.getLastByUserAndCompanion(user, companion).get();
+            return repository.getLastMessageByDialog(dialog).get();
         } catch (NoSuchElementException e) {
             return null;
         }
     }
 
-    public List<Message> getLastMessages(User user, User companion) {
-        return repository.findFirst20BySenderAndRecipientOrSenderAndRecipientOrderByCreatedByDesc(user, companion, companion, user).stream()
+    public List<Message> getLastMessages(Dialog dialog) {
+        return repository.findFirst20ByDialogOrderByCreatedByDesc(dialog).stream()
                 .sorted(Comparator.comparingLong(Message::getCreatedBy))
                 .collect(Collectors.toList());
     }
 
     public Message toMessage(MessageDTO dto) {
         User sender = userService.findById(dto.getSenderId());
-        User recipient = userService.findById(dto.getRecipientId());
-        return new Message(dto.getId(), sender, recipient, dto.getContent(), dto.getCreatedBy(), dto.getStatus());
+        Dialog dialog = dialogService.getDialogById(dto.getDialogId());
+        return new Message(dto.getId(), dialog, sender, dto.getContent(), dto.getCreatedBy(), dto.getStatus());
     }
 
-    public Long getNewMessagesCount(User recipient, User sender) {
-        return repository.getCountNewMessageCount(recipient, sender);
+    public Long getCountOfNewMessagesInDialogWhereSenderNotUser(Dialog dialog, User user) {
+        return repository.getCountOfNewMessagesInDialogWhereSenderNotUser(dialog, user);
     }
-
-    public void updateMessagesToReadByUserId(Long id) {
-        User user = userService.findById(id);
-        List<Message> messages = repository.findAllMessagesIsNotReadByUser(user);
-        messages.forEach(message -> {
-            message.setStatus(MessageStatus.READ);
-            repository.save(message);
-        });
-    }
+//
+//    public void updateMessagesToReadByUserId(Long id) {
+//        User user = userService.findById(id);
+//        List<Message> messages = repository.findAllMessagesIsNotReadByUser(user);
+//        messages.forEach(message -> {
+//            message.setStatus(MessageStatus.READ);
+//            repository.save(message);
+//        });
+//    }
 }

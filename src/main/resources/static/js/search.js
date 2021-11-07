@@ -17,7 +17,7 @@ contactsSearchInput.onkeydown = function(event) {
 contactsSearchInput.oninput = function(event) {
     var element = '';
     if(contactsSearchInput.value !== '' && contactsSearchInput.value !== ' ') {
-        fetch('/search?value=' + contactsSearchInput.value)
+        fetch('/users/search?value=' + contactsSearchInput.value)
             .then(response => response.json())
             .then(data => {
     //            element += searchHeader('Global search result: ');

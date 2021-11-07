@@ -117,6 +117,12 @@
                 </div>    
             </div>
             <div class="content _hide">
+                <div class="content_bg">
+                    <div class="hello_messages">
+                        <p>Hello friend!</p>
+                        <p>Select a chat to start messaging</p>
+                    </div>
+                </div>
                 <div class="conversation _active">
                     <div class="conversation_header">
                         <div class="back_button">
@@ -127,10 +133,10 @@
                             </div>
                         </div>
                         <div class="chat_info">
-                            <div class="header_title">
+                            <div class="header_title" id="content_recipient_name">
                                 William Wright
                             </div>
-                            <div class="header_subtitle">
+                            <div class="header_subtitle" id="content_recipient_status">
                                 online
                             </div>
                         </div>
@@ -215,10 +221,10 @@
                                     <div class="description_other">Poligender</div>
                                     <div class="description_other">19 August 1991</div>
                                     <div class="movements">
-                                        <div class="add_button" id="add-contact">Add to contacts</div>
-                                        <div class="delete_button" id="ignore-contact">Add to ignore list</div>
+                                        <div class="add_button" id="add-activeContact">Add to contacts</div>
+                                        <div class="delete_button" id="ignore-activeContact">Add to ignore list</div>
                                         <div class="delete_button" id="del-chat">Delete chat</div>
-                                        <div class="delete_button" id="del-contact">Delete contact</div>
+                                        <div class="delete_button" id="del-activeContact">Delete activeContact</div>
                                     </div>
                                 </div>
                             </div>
@@ -233,8 +239,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/search.js"></script>
-    <script src="/js/conversations.js"></script>
-    <script src="/js/contact_movements.js"></script>
+    <script src="/js/dialogs.js"></script>
+    <script src="/js/contacts.js"></script>
     <script src="/js/user.js"></script>
 </body>
 </html>
