@@ -57,12 +57,20 @@ function onMessageReceived(payload) {
 
             if (dialogs[dialogId]) {
                 if(message.senderId !== user.id) {
+                // исключить инкремент если диалог открыт
                     dialogs[dialogId].newMessagesCount++;
                 }
                 dialogs[dialogId].lastMessage = message;
                 viewUserConversations();
             } else if (hiddenDialogs[dialogId]) {
                 showDialogForUser(message.senderId);
+            }
+            if(message.senderId !== user.id) {
+                sendReceivedMessageToUser(message);
+            }
+            if (message.dialogId === currentDialogId) {
+                printMessage(message);
+                // send read fetch
             }
         }
     }
@@ -143,6 +151,7 @@ function getUser() {
         .then(data => {
             user = data;
             connect();
+            printSettingsContent();
         });
 }
 
@@ -171,9 +180,9 @@ function sendResponseToUserAboutAllMessagesIsRead(id) {
 //    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
 }
 
-function sendReceivedMessageToUser(id, message) {
-//    message.status = 'RECEIVED';
-//    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(message));
+function sendReceivedMessageToUser(message) {
+    message.status = 'RECEIVED';
+    stompClient.send("/app/message", {}, JSON.stringify(message));
 }
 
 function sendMessageToUser(id) {
@@ -184,17 +193,46 @@ function sendMessageToUser(id) {
                 senderId: user.id,
                 dialogId: getDialogIdIntoDialogsArrayByUserId(dialogs, id),
                 content: text,
-                status: 'SENT'
+                status: 'SENT',
+                createdBy: Date.now()
             };
 
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
             document.querySelector('#user-' + id).querySelector('.message_input').value = '';
         } else if (extendsDialogIntoDialogsArrayByContactId(hiddenDialogs, id)) {
-            showDialogAndSendMessage(id, text);
+            var chatMessage = {
+                senderId: user.id,
+                dialogId: getDialogIdIntoDialogsArrayByUserId(hiddenDialogs, id),
+                content: text,
+                status: 'SENT',
+                createdBy: Date.now()
+            };
+
+            stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+            document.querySelector('#user-' + id).querySelector('.message_input').value = '';
         } else {
             createDialogWithUserAndSendMessage(id, text);
         }
     }
 }
+
+function sendMessageToCurrentDialog() {
+    let text = contentInput.value;
+    if (text && currentDialogId && text != '') {
+        var chatMessage = {
+            senderId: user.id,
+            dialogId: currentDialogId,
+            content: text,
+            status: 'SENT',
+            createdBy: Date.now()
+        };
+
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        contentInput.value = '';
+    }
+}
+
+
+contentSendButton.addEventListener('click', sendMessageToCurrentDialog);
 
 initialization();

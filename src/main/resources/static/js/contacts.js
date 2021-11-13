@@ -9,11 +9,8 @@ function getContacts() {
         .then(data => {
             data.forEach(contact => {
                 contacts[contact.id] = contact;
-//                stompClient.subscribe(('/conversation/user/id:' + contact.user.id), onMessageReceived);
-//                loadMessages(contact.user.id);
             });
             viewContactList();
-//            viewUserConversations();
         });
 }
 
@@ -23,11 +20,8 @@ function getBlacklist() {
         .then(data => {
             data.forEach(companion => {
                 blacklist[companion.id] = companion;
-//                stompClient.subscribe(('/conversation/user/id:' + contact.user.id), onMessageReceived);
-//                loadMessages(contact.user.id);
             });
             viewContactList();
-//            viewUserConversations();
         });
 }
 

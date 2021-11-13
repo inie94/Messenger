@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.anani.messenger.dto.UserDTO;
+import ru.anani.messenger.entities.BlockedUser;
 import ru.anani.messenger.entities.User;
 import ru.anani.messenger.entities.enums.UserStatus;
+import ru.anani.messenger.repositories.BlockedUsersRepository;
 import ru.anani.messenger.repositories.UserRepository;
 import ru.anani.messenger.security.UserRepresentation;
 
@@ -17,12 +19,13 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository repository;
-
+    private final BlockedUsersRepository blockedUsersRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository repository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository repository, BlockedUsersRepository blockedUsersRepository, BCryptPasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.blockedUsersRepository = blockedUsersRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -98,4 +101,12 @@ public class UserService {
         return new ArrayList<>(repository.findAllByEmailOrFirstnameOrLastnameContainsIgnoreCase(user.getId(), value));
     }
 
+    public List<User> getAllCompanionIsBlockedUser(User authorizedUser) {
+        List<BlockedUser> blockedUsers = blockedUsersRepository.findAllByCompanion(authorizedUser);
+        List<User> users = new ArrayList<>();
+        blockedUsers.forEach(blockedUser -> {
+            users.add(blockedUser.getUser());
+        });
+        return users;
+    }
 }

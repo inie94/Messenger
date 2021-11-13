@@ -13,7 +13,7 @@ const createChatButton = document.querySelector('#create-chat-button');
 const contactsButton = document.querySelector('#contacts-button');
 const messagesButton = document.querySelector('#messages-button');
 const notificationsButton = document.querySelector('#notifications-button');
-const supportButton = document.querySelector('#support-button');
+const logoutButton = document.querySelector('#logout-button');
 const settingsButton = document.querySelector('#settings-button');
 
 // tabs 
@@ -21,7 +21,6 @@ const createChatTab = document.querySelector('#create-chat-tab');
 const contactsTab = document.querySelector('#contacts-tab');
 const messagesTab = document.querySelector('#messages-tab');
 const notificationsTab = document.querySelector('#notifications-tab');
-const supportTab = document.querySelector('#support-tab');
 const settingsTab = document.querySelector('#settings-tab');
 
 // tabs content
@@ -29,9 +28,12 @@ var createChatContent = document.querySelector('#create-chat-content');
 var contactsContent = document.querySelector('#contacts-tab').querySelector('.control_content');
 var messagesContent = document.querySelector('#messages-tab').querySelector('.control_content');
 var notificationsContent = document.querySelector('#notifications-content');
-var supportContent = document.querySelector('#support-content');
 var settingsContent = document.querySelector('#settings-content');
 
+//content
+
+const contentSendButton = document.querySelector('.conversation_footer').querySelector('.send');
+var contentInput = document.querySelector('.conversation_footer').querySelector('.message_input');
 
 const headerBtn = document.querySelector('.header_movement');
 headerBtn.addEventListener('click', function(e) {
@@ -53,7 +55,7 @@ backButton.addEventListener('click', function(e) {
     control.classList.toggle('_active');
 });
 
-const conversationBody = document.querySelector('.conversation_body');
+var conversationBody = document.querySelector('.conversation_body');
 conversationBody.scrollTop = conversationBody.scrollHeight;
 
 function resetActiveTab() {
@@ -98,13 +100,32 @@ function openNotification(event) {
 
 notificationsButton.addEventListener('click', openNotification);
 
-function openSupport(event) {
-    resetActiveTab();
-    event.currentTarget.classList.add('_active');
-    supportTab.classList.add('_active');
+function logout(event) {
+//    resetActiveTab();
+//    event.currentTarget.classList.add('_active');
+//    supportTab.classList.add('_active');
+    fetch('/logout', {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            [csrfHeader] : csrfToken,
+            'charset': 'UTF-8',
+            'Content-Type': 'application/json',
+        },
+        redirect: 'follow', // manual, *follow, error
+    })
+    .then(response => {
+            // HTTP 301 response
+            // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        })
+    .catch(function(err) {
+        console.info(err + " url: " + url);
+    });
 }
 
-supportButton.addEventListener('click', openSupport);
+logoutButton.addEventListener('click', logout);
 
 function openSettings(event) {
     resetActiveTab();
@@ -113,4 +134,5 @@ function openSettings(event) {
 }
 
 settingsButton.addEventListener('click', openSettings);
+
 

@@ -27,8 +27,6 @@ function getHiddenDialogs() {
                 hiddenDialogs[dialog.id] = dialog;
                 connectToDialog(dialog);
             });
-            // check 'SENT' message and do its 'RECEIVED'
-            viewUserConversations();
         });
 }
 
@@ -39,18 +37,35 @@ function getBlockedDialogs() {
             data.forEach(dialog => {
                 blockedDialogs[dialog.id] = dialog;
             });
-            // check 'SENT' message and do its 'RECEIVED'
-            viewUserConversations();
         });
 }
 
-function loadMessages(id) {
-    fetch('dialogs/id:' + id + '/messages')
+function loadMessages(dialogId) {
+    fetch('dialogs/id:' + dialogId + '/messages')
         .then(response => response.json())
         .then(data => {
-            messages[id] = data;
-            // check 'SENT' message and do its 'RECEIVED'
+            messages[dialogId] = data;
+            readAllMessages(dialogId);
+            configureContentTab(dialogs[dialogId]);
         });
+}
+
+function readAllMessages(dialogId) {
+    fetch('dialogs/messages/read', {
+            method: 'POST',
+            headers: {
+                [csrfHeader] : csrfToken,
+                'charset': 'UTF-8',
+                'Content-Type': 'application/json'
+            },
+            redirect: 'manual',
+            body: dialogId
+        })
+        .then(response => {
+            dialogs[dialogId].newMessagesCount = 0;
+            viewUserConversations();
+            viewDialogMessages(dialogId);
+        }).catch(err => console.log(err));
 }
 
 function viewUserConversations() {
@@ -58,6 +73,7 @@ function viewUserConversations() {
     dialogs.forEach(dialog => {
         if(dialog.lastMessage) {
             element += generateConversationTab(dialog);
+            allMessagesReceived(dialog.id);
         }
     });
     messagesContent.innerHTML = element;
@@ -84,7 +100,7 @@ function generateConversationTab(dialog) {
                      dialog.lastMessage.content +
                  '</div>' +
                  '<div class="card_update_count">';
-     if (dialog.newMessagesCount != 0) {
+     if (dialog.newMessagesCount && dialog.newMessagesCount != 0) {
         element += '<div class="message_count _active">'+ dialog.newMessagesCount + '</div>';
      } else {
         element += '<div class="message_count">'+ dialog.newMessagesCount + '</div>';
@@ -98,6 +114,26 @@ function generateConversationTab(dialog) {
      '</div>' +
     '</div>';
     return element;
+}
+
+function allMessagesReceived(dialogId) {
+    fetch('dialogs/messages/receive', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                [csrfHeader] : csrfToken,
+                'charset': 'UTF-8',
+                'Content-Type': 'application/json'
+            },
+            redirect: 'manual', // manual, *follow, error
+            body: dialogId
+        })
+//        .then(response => response.json())
+//        .then(data => {
+//            dialogs.splice(data.id, 1);
+//            hiddenDialogs[data.id] = data;
+//            viewUserConversations();
+//        })
+        .catch(err => console.log(err));
 }
 
 function connectToDialog(dialog) {
@@ -163,7 +199,6 @@ function generateInfoTab(user) {
 function openConversation(id) {
     currentDialogId = id;
     loadMessages(id);
-    configureContentTab(dialogs[id]);
     content.classList.remove('_hide');
     content.classList.add('_active');
     control.classList.remove('_active');
@@ -227,26 +262,26 @@ function showDialogForUser(dialogId) {
         }).catch(err => console.log(err));
 }
 
-function showDialogAndSendMessage(id, text) {
-    fetch('dialogs/show', {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            [csrfHeader] : csrfToken,
-            'charset': 'UTF-8',
-            'Content-Type': 'application/json'
-        },
-        redirect: 'manual', // manual, *follow, error
-        body: id
-    })
-    .then(response => response.json())
-    .then(data => {
-        hiddenDialogs.splice(data.id, 1);
-        dialogs[data.id] = data;
-        connectToDialog(data);
-        sendMessageToUser(id);
-        viewUserConversations();
-    }).catch(err => console.log(err));
-}
+//function showDialogAndSendMessage(userId) {
+//    fetch('dialogs/show', {
+//        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//        headers: {
+//            [csrfHeader] : csrfToken,
+//            'charset': 'UTF-8',
+//            'Content-Type': 'application/json'
+//        },
+//        redirect: 'manual', // manual, *follow, error
+//        body: getDialogIdIntoDialogsArrayByUserId(hiddenDialogs, userId)
+//    })
+//    .then(response => response.json())
+//    .then(data => {
+////        hiddenDialogs.splice(data.id, 1);
+////        dialogs[data.id] = data;
+////        connectToDialog(data);
+////        sendMessageToUser(userId);
+////        viewUserConversations();
+//    }).catch(err => console.log(err));
+//}
 
 //------------------------------
 

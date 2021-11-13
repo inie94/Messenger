@@ -23,6 +23,12 @@ public interface MessagesRepository extends JpaRepository<Message, Long> {
 //
     @Query("SELECT COUNT(m) FROM Message m WHERE m.dialog = :dialog AND m.sender != :user AND m.status != 2")
     Long getCountOfNewMessagesInDialogWhereSenderNotUser(@Param("dialog") Dialog dialog, @Param("user") User user);
+
+    @Query("SELECT m FROM Message m WHERE m.dialog = :dialog AND m.sender != :user AND m.status = 0")
+    List<Message> findAllMessagesWithSentStatusByDialogAndNotSender(@Param("dialog") Dialog dialog, @Param("user") User user);
+
+    @Query("SELECT m FROM Message m WHERE m.dialog = :dialog AND m.sender != :user")
+    List<Message> findAllMessagesByDialogAndNotSender(Dialog dialog, User user);
 //
 //    @Query("SELECT m FROM Message m WHERE m.status != 2 AND m.recipient = :recipient")
 //    List<Message> findAllMessagesIsNotReadByUser(@Param("recipient") User user);

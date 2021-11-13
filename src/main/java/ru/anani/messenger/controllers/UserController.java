@@ -1,10 +1,7 @@
 package ru.anani.messenger.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.anani.messenger.dto.UserDTO;
 import ru.anani.messenger.entities.User;
 import ru.anani.messenger.entities.enums.UserStatus;
@@ -35,20 +32,20 @@ public class UserController {
         return DTOService.toUserDTO(user);
     }
 
-
-////
-////    @GetMapping("/csrf")
-////    public @ResponseBody String getCsrfToken(HttpServletRequest request) {
-////        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-////        return csrf.getToken();
-////    }
-
     @GetMapping("/search")
     public List<UserDTO> searchUsers(@RequestParam("value") String searchValue, Principal principal) {
         User authorizedUser = userService.findByEmail(principal.getName());
         List<UserDTO> userDTOs = new ArrayList<>();
         List<User> users = userService.searchUsersBy(authorizedUser, searchValue);
+        List<User> hideUsers = userService.getAllCompanionIsBlockedUser(authorizedUser);
+        users.removeAll(hideUsers);
         users.forEach(user -> userDTOs.add(DTOService.toUserDTO(user)));
         return userDTOs;
+    }
+
+    @PostMapping("/edit")
+    public UserDTO editUserProfile(@RequestBody UserDTO representation, Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        return DTOService.toUserDTO(userService.update(representation, user));
     }
 }

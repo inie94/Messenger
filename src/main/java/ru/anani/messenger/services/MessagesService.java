@@ -7,6 +7,7 @@ import ru.anani.messenger.dto.MessageDTO;
 import ru.anani.messenger.entities.Dialog;
 import ru.anani.messenger.entities.Message;
 import ru.anani.messenger.entities.User;
+import ru.anani.messenger.entities.enums.MessageStatus;
 import ru.anani.messenger.repositories.MessagesRepository;
 
 import java.util.Comparator;
@@ -59,6 +60,22 @@ public class MessagesService {
 
     public Long getCountOfNewMessagesInDialogWhereSenderNotUser(Dialog dialog, User user) {
         return repository.getCountOfNewMessagesInDialogWhereSenderNotUser(dialog, user);
+    }
+
+    public void receiveAllMessagesIntoDialogByUser(Dialog dialog, User user) {
+        List<Message> messages = repository.findAllMessagesWithSentStatusByDialogAndNotSender(dialog, user);
+        messages.forEach(message -> {
+            message.setStatus(MessageStatus.RECEIVED);
+            save(message);
+        });
+    }
+
+    public void readAllMessagesIntoDialogByUser(Dialog dialog, User user) {
+        List<Message> messages = repository.findAllMessagesByDialogAndNotSender(dialog, user);
+        messages.forEach(message -> {
+            message.setStatus(MessageStatus.READ);
+            save(message);
+        });
     }
 //
 //    public void updateMessagesToReadByUserId(Long id) {

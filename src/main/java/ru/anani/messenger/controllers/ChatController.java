@@ -36,31 +36,8 @@ public class ChatController {
 
     @MessageMapping("/message")
     public MessageDTO sendMessage(@Payload MessageDTO message) {
-        if (!message.getStatus().equals(MessageStatus.READ)) {
-            message.setCreatedBy(new Date().getTime());
-            message = service.save(message);
-        } else {
-//            service.updateMessagesToReadByUserId(message.getSenderId());
-        }
+        message = service.save(message);
         messagingTemplate.convertAndSend("/conversation/dialog/id:" + message.getDialogId(), message);
         return message;
     }
-
-
-
-//    @MessageMapping("/chat.notification")
-//    @SendTo("/topic/notification")
-//    public MessageDTO sendNotification(@Payload MessageDTO message) {
-////        messagingTemplate.convertAndSend("/topic/notification", message);
-//        return message;
-//    }
-
-//    @MessageMapping("/chat.connect")
-//    @SendTo("/topic/notification")
-//    public MessageDTO connect(@Payload MessageDTO message,
-//                           SimpMessageHeaderAccessor headerAccessor) {
-//        headerAccessor.getSessionAttributes().put("username", message.getSender());
-//        return message;
-//    }
-
 }

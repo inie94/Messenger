@@ -100,15 +100,15 @@ public class DialogController {
     }
 
     @PostMapping("show")
-    public DialogDTO showDialogToUserByCompanion(@RequestBody Long companionId, Principal principal) {
+    public DialogDTO showDialogToUserByCompanion(@RequestBody Long dialogId, Principal principal) {
         User user = userService.findByEmail(principal.getName());
-        User companion = userService.findById(companionId);
-        Dialog dialog = dialogService.getDialogByUsers(user, companion);
+//        User companion = userService.findById(companionId);
+        Dialog dialog = dialogService.getDialogById(dialogId);
         dialogService.showToUser(dialog, user);
         Message lastMessage = messagesService.getLastMessageByDialog(dialog);
         Long newMessagesCount = messagesService.getCountOfNewMessagesInDialogWhereSenderNotUser(dialog, user);
 
-        return DTOService.toDialogDTO(dialog, companion, lastMessage, newMessagesCount);
+        return DTOService.toDialogDTO(dialog, dialog.getAnotherCompanion(user), lastMessage, newMessagesCount);
     }
 
     @PostMapping("hide")

@@ -1,10 +1,8 @@
 package ru.anani.messenger.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.anani.messenger.dto.DialogDTO;
 import ru.anani.messenger.dto.MessageDTO;
 import ru.anani.messenger.entities.Dialog;
 import ru.anani.messenger.entities.Message;
@@ -51,11 +49,21 @@ public class MessageController {
         return messages;
     }
 
-//    @GetMapping("/user/message/all-read")
-//    public void messageReceived(Principal principal) {
-//        User user = userService.findByEmail(principal.getName());
-//        messagesService.updateMessagesToReadByUser(user);
-//    }
+    @PostMapping("dialogs/messages/receive")
+    public void messageReceived(@RequestBody Long dialogId,
+                                Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        Dialog dialog = dialogService.getDialogById(dialogId);
+        messagesService.receiveAllMessagesIntoDialogByUser(dialog, user);
+    }
+
+    @PostMapping("dialogs/messages/read")
+    public void messageRead(@RequestBody Long dialogId,
+                                 Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        Dialog dialog = dialogService.getDialogById(dialogId);
+        messagesService.readAllMessagesIntoDialogByUser(dialog, user);
+    }
 
 //    @GetMapping("/user/topic/id:{id}/messages")
 //    public List<MessageDTO> getAllTopicMessages(@PathVariable("id") long topicId) {

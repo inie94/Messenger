@@ -18,4 +18,6 @@ public interface BlockedUsersRepository extends JpaRepository<BlockedUser, Long>
     List<BlockedUser> findAllByUser(User user);
 
     Optional<BlockedUser> findByUserAndCompanion(User user, User contact);
+
+    List<BlockedUser> findAllByCompanion(User authorizedUser);
 }

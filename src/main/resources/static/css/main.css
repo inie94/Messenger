@@ -92,6 +92,22 @@
 .control_tab::-webkit-scrollbar {
     width: 0;
 }
+.user_info_box {
+    display: flex;
+}
+.tab_input {
+    height: 40px;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 15px;
+}
+.tab_input_rounded {
+    height: 40px;
+    width: 100%;
+    border-radius: 10px;
+    padding: 15px;
+}
 .search_form {
     padding-top: 20px;
 }
@@ -133,7 +149,6 @@
     width: 100%;
     height: fit-content;
     border-radius: 10px;
-    /* display: flex; */
     background-color: #222;
 }
 .card._active .status_oval {
@@ -161,7 +176,6 @@
     width: 100%;
     height: 100%;
 }
-
 .card_header {
     padding: 15px 0px 15px 0px;
     display: flex;
@@ -200,7 +214,6 @@
     padding: 10px 20px 10px 20px;
     display: none;
     width: 100%;
-    /* justify-content: center; */
     text-align: center;
     height: fit-content;
 }
@@ -225,7 +238,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    color: grey;
+    color: rgb(163, 161, 161);
     background-color: #333;
     border-radius: 10px;
     padding: 10px;
@@ -267,7 +280,6 @@
     display: flex;
     background-color: #222;
 }
-
 .content > .content_bg {
     display:none;
 }
@@ -282,7 +294,6 @@
     height: 100%;
     align-items: center;
     justify-items: center;
-
 }
 .hello_messages {
     background-color:#333;
@@ -294,7 +305,6 @@
     font-size: 12pt;
     font-weight: bolder;
     color: rgba(122, 122, 122, 0.76);
-
 }
 .conversation {
     position: relative;
@@ -346,7 +356,7 @@
     padding-right: 20px;
 }
 .chat_info {
-    width: 100%;    
+    width: 100%;
     align-items: center;
 }
 .header_subtitle {
@@ -372,7 +382,7 @@
     background-color:white;
     border-radius: 50%;
     transition: all 0.3s ease 0s;
-} 
+}
 .dot_menu:before, .dot_menu:after {
     content: "";
     position: absolute;
@@ -381,7 +391,7 @@
     left: 0px;
     background-color: inherit;
     border-radius: inherit;
-} 
+}
 .dot_menu:before {
     top: -10px;
 }
@@ -394,8 +404,9 @@
     width: 100%;
     height: 100%;
     overflow: auto;
+    /*overflow-y: scroll;*/
     padding: 120px 0px 120px 0px;
-    
+
 }
 .conversation_body::-webkit-scrollbar {
     width: 0;
@@ -406,11 +417,23 @@
     row-gap: 20px;
     z-index: 1;
 }
+
+.date_container {
+    padding: 10px;
+    width: fit-content;
+    border-radius: 20px;
+    margin: 0 auto;
+    border-color: gray;
+    border-style: solid;
+    border-width: 1px;
+    color: gray;
+    font-size: 12px;
+}
 .message_container {
     position: relative;
     display: flex;
     width: 100%;
-    width: fit-content;
+
 }
 .message_container._user {
     justify-content: right;
@@ -419,11 +442,13 @@
     justify-content: left;
 }
 .message {
-    left: 0;
-    padding: 10px;
-    max-width: 70%;
+    position: relative;
+    max-width: 60%;
     height: 100%;
     border-radius: 10px;
+    padding: 10px;
+    display: grid;
+    row-gap: 10px;
 }
 .message_container._user .message {
     background-color: rgb(0, 89, 255);
@@ -431,6 +456,24 @@
 .message_container._companion .message {
     background-color: #333;
 }
+
+.message_text {
+    left: 0;
+}
+
+.message_info {
+    font-size: 10pt;
+}
+
+.message_container._companion  .message_info {
+    color: rgb(143, 143, 143);
+    text-align: right;
+}
+
+.message_container._user  .message_info {
+    color: rgb(212, 212, 212);
+}
+
 .message_movement {
     position: relative;
     width: fit-content;
@@ -473,6 +516,14 @@
     font-size: 10pt;
     font-weight: bolder;
 }
+.send_rounded {
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgb(0, 102, 255);
+    color: white;
+    font-size: 10pt;
+    font-weight: bolder;
+}
 .send:hover {
     background-color: rgb(0, 162, 255);
 }
@@ -490,6 +541,9 @@
     position: relative;
     height: inherit;
     width: 100%;
+}
+.settings_header {
+    font-weight: bolder;
 }
 .info_header {
     position: absolute;
@@ -539,7 +593,6 @@
     height: fit-content;
     width: fit-content;
     margin: auto auto;
-    /* background-color: rgb(187, 45, 45); */
 }
 .companion_icon {
     position: relative;
@@ -576,7 +629,6 @@
     color: dodgerblue;
 }
 .add_button:hover {
-    /* color: cyan; */
     text-decoration: underline;
     cursor: pointer;
 }
@@ -584,7 +636,6 @@
     color: crimson;
 }
 .delete_button:hover {
-    /* color: cyan; */
     text-decoration: underline;
     cursor: pointer;
 }
@@ -596,12 +647,13 @@
         transition: all 0.3s ease 0s;
     }
     .conversation {
+        width: 50%;
         margin-right: calc(50% + 20px);
         transition: all 0.3s ease 0s;
     }
     .conversation._active {
         margin-right: 0;
-        width: inherit;
+        width: 100%;
         transition: all 0.3s ease 0s;
     }
     .info {
